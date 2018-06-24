@@ -60,7 +60,7 @@ class ViewController: UIViewController {
                 numberOnScreen /= 100
             }
             
-            resultLabel.text = testDot(number: numberOnScreen)
+            resultLabel.text = setResultLabel(number: numberOnScreen)
         }else if sender.tag != 12 && sender.tag != 19{
             previousNum = testComma(number:resultLabel.text!)
             operation = sender.tag
@@ -81,7 +81,7 @@ class ViewController: UIViewController {
                 result = previousNum + numberOnScreen
             }
             
-            resultLabel.text = testDot(number: result)
+            resultLabel.text = setResultLabel(number: result)
         }else{
             resultLabel.text = "0"
             performingMath = false
@@ -105,6 +105,14 @@ class ViewController: UIViewController {
             return String(number).replacingOccurrences(of: ".", with: ",")
         }else{
             return String(number)
+        }
+    }
+    
+    func setResultLabel(number:Double) -> String{
+        if floor(number) == number{
+            return "\(Int(floor(number)))"
+        }else{
+            return testDot(number:number)
         }
     }
 }
