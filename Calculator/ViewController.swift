@@ -27,35 +27,27 @@ class ViewController: UIViewController {
     }
 
     @IBAction func Numbers(_ sender: UIButton) {
-        if performingMath{
-            resultLabel.text = String(sender.tag - 1)
-            performingMath = false
-        }else{
-            resultLabel.text = "\(resultLabel.text! + String(sender.tag - 1))"
+        if(sender.tag != 11){
+            if performingMath{
+                resultLabel.text = String(sender.tag - 1)
+                performingMath = false
+            }else if(resultLabel.text != "0"){
+                resultLabel.text = "\(resultLabel.text! + String(sender.tag - 1))"
+            }else if(sender.tag - 1) != 0{
+                resultLabel.text = "\(String(sender.tag - 1))"
+            }
+            
+            numberOnScreen = testComma(number:resultLabel.text!)
+        }else if !(resultLabel.text!.contains(",")){
+            resultLabel.text = "\(resultLabel.text!),"
         }
-        
-        numberOnScreen = Double(resultLabel.text!)!
     }
     
     @IBAction func Buttons(_ sender: UIButton) {
-        if resultLabel.text != "" && sender.tag != 12 && sender.tag != 19{
-            previousNum = Double(resultLabel.text!)!
+        if sender.tag != 12 && sender.tag != 19{
+            previousNum = testComma(number:resultLabel.text!)
             operation = sender.tag
             performingMath = true
-            
-            switch operation{
-            case 15:
-                resultLabel.text = "/"
-                break
-            case 16:
-                resultLabel.text = "x"
-                break
-            case 17:
-                resultLabel.text = "-"
-                break
-            default:
-                resultLabel.text = "+"
-            }
         }else if sender.tag == 19{
             switch operation{
             case 15:
@@ -71,7 +63,7 @@ class ViewController: UIViewController {
                 resultLabel.text = "\(previousNum + numberOnScreen)"
             }
         }else{
-            resultLabel.text = ""
+            resultLabel.text = "0"
             performingMath = false
             previousNum = 0
             numberOnScreen = 0
@@ -79,5 +71,12 @@ class ViewController: UIViewController {
         }
     }
     
+    func testComma(number:String) -> Double{
+        if number.contains(","){
+            return Double(number.replacingOccurrences(of: ",", with: "."))!
+        }else{
+            return Double(number)!
+        }
+    }
 }
 
