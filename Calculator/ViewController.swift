@@ -30,39 +30,47 @@ class ViewController: UIViewController {
         if performingMath{
             resultLabel.text = String(sender.tag - 1)
             performingMath = false
+        }else{
+            resultLabel.text = "\(resultLabel.text! + String(sender.tag - 1))"
         }
         
-        resultLabel.text = "\(resultLabel.text! + String(sender.tag - 1))"
         numberOnScreen = Double(resultLabel.text!)!
     }
     
     @IBAction func Buttons(_ sender: UIButton) {
-        if resultLabel.text != "" && sender.tag != 11 && sender.tag != 16{
+        if resultLabel.text != "" && sender.tag != 12 && sender.tag != 19{
             previousNum = Double(resultLabel.text!)!
             operation = sender.tag
+            performingMath = true
             
-            if operation == 12{
+            switch operation{
+            case 15:
                 resultLabel.text = "/"
-            }else if operation == 13{
+                break
+            case 16:
                 resultLabel.text = "x"
-            }else if operation == 14{
+                break
+            case 17:
                 resultLabel.text = "-"
-            }else{
+                break
+            default:
                 resultLabel.text = "+"
             }
-            
-            performingMath = true
-        }else if sender.tag == 16{
-            if operation == 12{
+        }else if sender.tag == 19{
+            switch operation{
+            case 15:
                 resultLabel.text = "\(previousNum / numberOnScreen)"
-            }else if operation == 13{
+                break
+            case 16:
                 resultLabel.text = "\(previousNum * numberOnScreen)"
-            }else if operation == 14{
+                break
+            case 17:
                 resultLabel.text = "\(previousNum - numberOnScreen)"
-            }else{
+                break
+            default:
                 resultLabel.text = "\(previousNum + numberOnScreen)"
             }
-        }else if sender.tag == 11{
+        }else{
             resultLabel.text = ""
             performingMath = false
             previousNum = 0
