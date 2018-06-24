@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     var previousNum:Double = 0
     var performingMath = false;
     var operation = 0
+    var isAffirmative:Bool = true
     @IBOutlet weak var resultLabel: UILabel!
     
     override func viewDidLoad() {
@@ -28,7 +29,15 @@ class ViewController: UIViewController {
 
     @IBAction func Numbers(_ sender: UIButton) {
         if(sender.tag != 11){
-            if performingMath{
+            if sender.tag == 13{
+                if isAffirmative{
+                    resultLabel.text = "-\(resultLabel.text!)"
+                    isAffirmative = false
+                }else{
+                    resultLabel.text!.removeFirst(1)
+                    isAffirmative = true
+                }
+            }else if performingMath{
                 resultLabel.text = String(sender.tag - 1)
                 performingMath = false
             }else if(resultLabel.text != "0"){
@@ -49,22 +58,30 @@ class ViewController: UIViewController {
             operation = sender.tag
             performingMath = true
         }else if sender.tag == 19{
+            var result:Double = 0
             switch operation{
             case 15:
-                resultLabel.text = "\(previousNum / numberOnScreen)"
+                result = previousNum / numberOnScreen
                 break
             case 16:
-                resultLabel.text = "\(previousNum * numberOnScreen)"
+                result = previousNum * numberOnScreen
                 break
             case 17:
-                resultLabel.text = "\(previousNum - numberOnScreen)"
+                result = previousNum - numberOnScreen
                 break
             default:
-                resultLabel.text = "\(previousNum + numberOnScreen)"
+                result = previousNum + numberOnScreen
+            }
+            
+            if String(result).contains("."){
+                resultLabel.text = String(result).replacingOccurrences(of: ".", with: ",")
+            }else{
+                resultLabel.text = String(result)
             }
         }else{
             resultLabel.text = "0"
             performingMath = false
+            isAffirmative = true
             previousNum = 0
             numberOnScreen = 0
             operation = 0
