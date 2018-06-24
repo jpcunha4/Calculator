@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     var numberOnScreen:Double = 0
-    var previousNum:Double = 0
+    var previousNum:Double!
     var performingMath = false;
     var operation = 0
     var isAffirmative:Bool = true
@@ -53,7 +53,15 @@ class ViewController: UIViewController {
     }
     
     @IBAction func Buttons(_ sender: UIButton) {
-        if sender.tag != 12 && sender.tag != 19{
+        if sender.tag == 14{
+            if previousNum != nil{
+                numberOnScreen = previousNum * testComma(number: resultLabel.text!) / 100
+            }else{
+                numberOnScreen /= 100
+            }
+            
+            resultLabel.text = testDot(number: numberOnScreen)
+        }else if sender.tag != 12 && sender.tag != 19{
             previousNum = testComma(number:resultLabel.text!)
             operation = sender.tag
             performingMath = true
@@ -73,11 +81,7 @@ class ViewController: UIViewController {
                 result = previousNum + numberOnScreen
             }
             
-            if String(result).contains("."){
-                resultLabel.text = String(result).replacingOccurrences(of: ".", with: ",")
-            }else{
-                resultLabel.text = String(result)
-            }
+            resultLabel.text = testDot(number: result)
         }else{
             resultLabel.text = "0"
             performingMath = false
@@ -93,6 +97,14 @@ class ViewController: UIViewController {
             return Double(number.replacingOccurrences(of: ",", with: "."))!
         }else{
             return Double(number)!
+        }
+    }
+    
+    func testDot(number:Double) -> String {
+        if String(number).contains("."){
+            return String(number).replacingOccurrences(of: ".", with: ",")
+        }else{
+            return String(number)
         }
     }
 }
